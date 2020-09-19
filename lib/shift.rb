@@ -1,5 +1,5 @@
-require './lib/key.rb'
-require './lib/offset.rb'
+require './lib/key'
+require './lib/offset'
 class Shift
   attr_reader :key, :offset
   def initialize(key = nil, date = nil)
