@@ -1,6 +1,8 @@
 class Key
-  def value
-    5.times.map { rand(10) }.join.to_s
+  attr_reader :value
+  
+  def initialize(key = 5.times.map { rand(10) }.join.to_s)
+    @value = key
   end
 
   def breakdown
