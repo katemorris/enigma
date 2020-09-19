@@ -23,17 +23,9 @@ class Shift
     end
   end
 
-  def breakdown_merge
-    @key.breakdown.merge(@offset.breakdown) do |letter, key_val, off_val|
-      key_val + off_val
-    end
-  end
-
   def breakdown
-    breakdown = Hash.new
-    breakdown_merge.map do |letter, value|
-      breakdown[letter] = value % 27
+    @key.breakdown.merge(@offset.breakdown) do |letter, key_val, off_val|
+      (key_val + off_val) % 27
     end
-    breakdown
   end
 end
