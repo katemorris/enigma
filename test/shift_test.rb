@@ -1,6 +1,4 @@
 require './test/test_helper'
-# require './lib/key.rb'
-# require './lib/offset.rb'
 require './lib/shift.rb'
 
 class ShiftTest < Minitest::Test
@@ -24,11 +22,10 @@ class ShiftTest < Minitest::Test
   end
 
   def test_it_has_complete_shift_values
-    skip
     shift = Shift.new
     shift.key.stubs(:value).returns('19987')
     shift.offset.stubs(:value).returns('0267')
-
+  
     expected = { A: 19, B: 101, C: 104, D: 94 }
     assert_equal expected, shift.breakdown
   end
