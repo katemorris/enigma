@@ -23,7 +23,9 @@ class Shift
     end
   end
 
-  def method_name
-
+  def breakdown
+    @key.breakdown.merge(@offset.breakdown) do |letter, key_val, off_val|
+      key_val + off_val
+    end
   end
 end
