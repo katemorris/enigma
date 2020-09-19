@@ -21,12 +21,21 @@ class ShiftTest < Minitest::Test
     assert_instance_of Key, shift.key_check('03782')
   end
 
-  def test_it_has_complete_shift_values
+  def test_it_has_merged_breakdown_values
     shift = Shift.new
     shift.key.stubs(:value).returns('19987')
     shift.offset.stubs(:value).returns('0267')
-  
+
     expected = { A: 19, B: 101, C: 104, D: 94 }
+    assert_equal expected, shift.breakdown_merge
+  end
+
+  def test_it_returns_true_shift_values
+    shift = Shift.new
+    shift.key.stubs(:value).returns('19987')
+    shift.offset.stubs(:value).returns('0267')
+
+    expected = { A: 19, B: 20, C: 23, D: 13 }
     assert_equal expected, shift.breakdown
   end
 end
