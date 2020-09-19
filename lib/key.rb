@@ -1,10 +1,10 @@
 class Key
   def value
-    5.times.map { rand(10) }.join
+    5.times.map { rand(10) }.join.to_s
   end
 
   def breakdown
-    key_split = value.to_s.split("")
+    key_split = value.split("")
     list = {}
     list[:A] = (key_split[0] + key_split[1]).to_i
     list[:B] = (key_split[1] + key_split[2]).to_i
