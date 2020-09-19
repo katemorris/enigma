@@ -1,7 +1,5 @@
-require 'minitest/autorun'
-require 'minitest/pride'
+require './test/test_helper'
 require './lib/offset.rb'
-
 require 'mocha/minitest'
 
 class OffsetTest < Minitest::Test
