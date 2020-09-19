@@ -6,7 +6,7 @@ class Key
   end
 
   def breakdown
-    key_split = @value.split("")
+    key_split = self.value.split("")
     list = {}
     list[:A] = (key_split[0] + key_split[1]).to_i
     list[:B] = (key_split[1] + key_split[2]).to_i
