@@ -1,11 +1,13 @@
 require 'date'
 
 class Offset
+  attr_reader :date
+  def initialize(date = Date.today.strftime('%m%d%Y'))
+    @date = date
+  end
+
   def value
-    date = Date.today
-    date_string = date.strftime('%m%d%Y')
-    square_string = (date_string.to_i ** 2).to_s
-    square_string.split('').last(4).join
+    (@date.to_i ** 2).to_s.split('').last(4).join
   end
 
   def breakdown
