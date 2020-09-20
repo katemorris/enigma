@@ -45,36 +45,36 @@ class EnigmaTest < Minitest::Test
 
   def test_it_can_encrypt
     expected = {
-                encryption: 'keder ohulw',
-                key: '02715',
-                date: '040895'
-                }
+      encryption: 'keder ohulw',
+      key: '02715',
+      date: '040895'
+    }
     assert_equal expected, @enigma.encrypt('hello world', '02715', '040895')
   end
 
   def test_it_can_decrypt
     expected = {
-                decryption: 'hello world',
-                key: '02715',
-                date: '040895'
-                }
+      ecryption: 'hello world',
+      key: '02715',
+      date: '040895'
+    }
     assert_equal expected, @enigma.decrypt('keder ohulw', '02715', '040895')
   end
 
   def test_it_can_encrypt_and_decrypt_using_today_date
     @enigma.stubs(:make_date).returns('091820')
     encrypted = {
-                encryption: 'lib sdmcvpu',
-                key: '02715',
-                date: '091820'
-                }
+      encryption: 'lib sdmcvpu',
+      key: '02715',
+      date: '091820'
+    }
     assert_equal encrypted, @enigma.encrypt('hello world', '02715')
 
     expected = {
-                decryption: 'hello world',
-                key: '02715',
-                date: '091820'
-                }
+      decryption: 'hello world',
+      key: '02715',
+      date: '091820'
+    }
     assert_equal expected, @enigma.decrypt(encrypted[:encryption], '02715')
   end
 
@@ -82,10 +82,10 @@ class EnigmaTest < Minitest::Test
     @enigma.stubs(:make_date).returns('091820')
     @enigma.stubs(:make_key).returns('05732')
     expected = {
-                encryption: 'oldqvgotysw',
-                key: '05732',
-                date: '091820'
-                }
+      encryption: 'oldqvgotysw',
+      key: '05732',
+      date: '091820'
+    }
     assert_equal expected, @enigma.encrypt('hello world')
   end
 end
