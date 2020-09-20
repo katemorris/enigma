@@ -3,7 +3,7 @@ require 'date'
 require './lib/variable'
 
 class Enigma
-  @@chars = ("a".."z").to_a << " "
+  @@chars = ('a'..'z').to_a << ' '
   include Variable
 
   def line_breakdown(string)
