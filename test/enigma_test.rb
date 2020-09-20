@@ -12,16 +12,24 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, @enigma.get_shift('02715', '040895')
   end
 
+  def test_it_can_rotate_characters
+    move = 4
+    char = 't'
+    @enigma.stubs(:rotate).returns('x')
+    assert_equal 'x', @enigma.rotate(move, char)
+  end
+
   def test_it_can_shift_letters
     char = 'r'
     round = 7
     key = '02715'
     date = '040895'
+    @enigma.stubs(:rotate_letter).returns('j')
     assert_equal 'j', @enigma.shift_letter(char, round, key, date)
   end
 
   def test_it_can_encrypt_a_string
-    assert_equal 'keder ohulw', @enigma.encrypt_string('hello world', '02715', '040895')
+    assert_equal 'keder ohulw', @enigma.change_characters('hello world', '02715', '040895')
   end
 
   def test_it_can_encrypt
