@@ -62,18 +62,18 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_can_encrypt_and_decrypt_using_today_date
-    @enigma.stubs(:make_date).returns('091820')
+    @enigma.stubs(:make_date).returns('180920')
     encrypted = {
-      encryption: 'lib sdmcvpu',
+      encryption: 'pib wdmczpu',
       key: '02715',
-      date: '091820'
+      date: '180920'
     }
     assert_equal encrypted, @enigma.encrypt('hello world', '02715')
 
     expected = {
       decryption: 'hello world',
       key: '02715',
-      date: '091820'
+      date: '180920'
     }
     assert_equal expected, @enigma.decrypt(encrypted[:encryption], '02715')
   end
@@ -107,6 +107,7 @@ class EnigmaTest < Minitest::Test
 
   def test_it_can_crack_without_date
     skip
+    @enigma.stubs(:make_date).returns('091820')
     cracked = {
       encryption: 'hello world end',
       date: '092020',
