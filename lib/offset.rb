@@ -2,7 +2,7 @@ require 'date'
 
 class Offset
   attr_reader :date
-  def initialize(date = Date.today.strftime('%m%d%Y'))
+  def initialize(date = Date.today.strftime('%m%d%y'))
     @date = date
   end
 
