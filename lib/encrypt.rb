@@ -10,5 +10,5 @@ encrypted_message = contents.map do |line|
   key = array[:key]
   array[:encryption]
 end
-encrypted = open(ARGV.last, 'w').write(encrypted_message.join)
+open(ARGV.last, 'w').write(encrypted_message.join)
 puts "Created #{ARGV.last} with the key #{key} and date #{date}"
