@@ -1,6 +1,16 @@
 require './lib/shift'
+require 'date'
+
 class Enigma
   @@chars = ("a".."z").to_a << " "
+
+  def make_key
+    5.times.map { rand(10) }.join.to_s
+  end
+
+  def make_date
+    Date.today.strftime('%m%d%y')
+  end
 
   def line_breakdown(string)
     string.split('')
@@ -41,7 +51,7 @@ class Enigma
     end.join
   end
 
-  def encrypt(string, key = nil, date = nil)
+  def encrypt(string, key = make_key, date = make_date)
     {
       encryption: encrypt_string(string, key, date),
       key: key,
@@ -49,7 +59,7 @@ class Enigma
     }
   end
 
-  def decrypt(string, key = nil, date = nil)
+  def decrypt(string, key = make_key, date = make_date)
     {
       decryption: decrypt_string(string, key, date),
       key: key,
