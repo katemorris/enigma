@@ -12,7 +12,7 @@ class Shift
   end
 
   def make_date
-    Date.today.strftime('%m%d%Y')
+    Date.today.strftime('%m%d%y')
   end
 
   def breakdown
