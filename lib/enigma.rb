@@ -18,8 +18,10 @@ class Enigma
     location = @@chars.index(char)
     if caller[4].include?('encrypt')
       @@chars.rotate(move)[location]
-    else
+    elsif caller[4].include?('decrypt')
       @@chars.rotate(-1 * move)[location]
+    else
+      p 'Something is wrong'
     end
   end
 
