@@ -41,7 +41,7 @@ class Enigma
     end.join
   end
 
-  def encrypt(string, key, date)
+  def encrypt(string, key = nil, date = nil)
     {
       encryption: encrypt_string(string, key, date),
       key: key,
@@ -49,7 +49,7 @@ class Enigma
     }
   end
 
-  def decrypt(string, key, date)
+  def decrypt(string, key = nil, date = nil)
     {
       decryption: decrypt_string(string, key, date),
       key: key,
