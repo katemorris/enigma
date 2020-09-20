@@ -14,13 +14,6 @@ class ShiftTest < Minitest::Test
     assert_equal '050585', shift2.offset.date
   end
 
-  def test_key_returns_new_value_or_given
-    shift = Shift.new
-
-    assert_instance_of Key, shift.key_check(nil)
-    assert_instance_of Key, shift.key_check('03782')
-  end
-
   def test_it_returns_shift_values
     shift = Shift.new
     shift.key.stubs(:value).returns('19987')
