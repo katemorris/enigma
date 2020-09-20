@@ -4,6 +4,6 @@ module Variable
   end
 
   def make_date
-    Date.today.strftime('%m%d%y')
+    Date.today.strftime('%d%m%y')
   end
 end
