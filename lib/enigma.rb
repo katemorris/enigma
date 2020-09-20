@@ -62,4 +62,34 @@ class Enigma
       date: date
     }
   end
+
+  def comparison_hash(string)
+    end_encoded = string.split('').pop(4) #hssi
+    end_index = [' ', 'e', 'n', 'd']
+    end_encoded.each_with_object({}) do |character, hash|
+      end_index.each do |char_unencoded|
+        hash[character] = char_unencoded
+      end
+    end
+  end
+
+  def find_key(string, date)
+    round = 0
+    comparison_hash(string).each_with_object({}) do |(encoded, decoded), hash|
+      if encoded == decoded
+        hash[:A] = 0
+      else
+        hash[:A] = @chars.index(encoded) - @chars.index(decoded)
+      end
+    end
+  end
+
+  def crack(string, date = make_date)
+    key = find_key(string.downcase, date)
+    {
+      decryption: change_characters(string.downcase, date, key),
+      date: date,
+      key: key
+    }
+  end
 end
