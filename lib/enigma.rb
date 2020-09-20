@@ -49,7 +49,7 @@ class Enigma
 
   def encrypt(string, key = make_key, date = make_date)
     {
-      encryption: change_characters(string, key, date),
+      encryption: change_characters(string.downcase, key, date),
       key: key,
       date: date
     }
@@ -57,7 +57,7 @@ class Enigma
 
   def decrypt(string, key = make_key, date = make_date)
     {
-      decryption: change_characters(string, key, date),
+      decryption: change_characters(string.downcase, key, date),
       key: key,
       date: date
     }
