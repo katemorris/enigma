@@ -3,8 +3,10 @@ require 'date'
 require './lib/variable'
 
 class Enigma
-  @@chars = ('a'..'z').to_a << ' '
   include Variable
+  def initialize
+    @chars = ('a'..'z').to_a << ' '
+  end
 
   def line_breakdown(string)
     string.split('')
@@ -15,11 +17,11 @@ class Enigma
   end
 
   def rotate_letter(move, char)
-    location = @@chars.index(char)
+    location = @chars.index(char)
     if caller[4].include?('encrypt')
-      @@chars.rotate(move)[location]
+      @chars.rotate(move)[location]
     else
-      @@chars.rotate(-1 * move)[location]
+      @chars.rotate(-1 * move)[location]
     end
   end
 
@@ -36,7 +38,7 @@ class Enigma
   def change_characters(string, key, date)
     round = 0
     line_breakdown(string).map do |char|
-      if @@chars.include?(char)
+      if @chars.include?(char)
         round += 1
         shift_letter(char, round, key, date)
       else
