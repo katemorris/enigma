@@ -42,23 +42,31 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, @enigma.decrypt("keder ohulw", "02715", "040895")
   end
 
-  def test_it_can_encrypt_using_today_date
+  def test_it_can_encrypt_and_decrypt_using_today_date
     @enigma.stubs(:make_date).returns('091820')
-    expected = {
+    encrypted = {
                   encryption: 'lib sdmcvpu',
                   key: '02715',
                   date: '091820'
                 }
-    assert_equal expected, @enigma.encrypt('hello world', '02715')
-  end
+    assert_equal encrypted, @enigma.encrypt('hello world', '02715')
 
-  def test_it_can_decrypt_using_today_date
-    @enigma.stubs(:make_date).returns('091820')
     expected = {
                   decryption: 'hello world',
                   key: '02715',
                   date: '091820'
                 }
-    assert_equal expected, @enigma.decrypt('lib sdmcvpu', '02715')
+    assert_equal expected, @enigma.decrypt(encrypted[:encryption], '02715')
+  end
+
+  def test_it_can_encrypt_using_generated_variables
+    @enigma.stubs(:make_date).returns('091820')
+    @enigma.stubs(:make_key).returns('05732')
+    expected = {
+                  encryption: 'oldqvgotysw',
+                  key: '05732',
+                  date: '091820'
+                }
+    assert_equal expected, @enigma.encrypt('hello world')
   end
 end
