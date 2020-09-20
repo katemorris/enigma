@@ -88,4 +88,30 @@ class EnigmaTest < Minitest::Test
     }
     assert_equal expected, @enigma.encrypt('hello world')
   end
+
+  def test_it_can_crack_a_code
+    expected = {
+      encryption: 'vjqtbeaweqihssi',
+      key: '08304',
+      date: '291018'
+    }
+    assert_equal expected, @enigma.encrypt("hello world end", "08304", "291018")
+
+    cracked = {
+      encryption: 'hello world end',
+      date: '291018',
+      key: '08304'
+    }
+    assert_equal cracked, @enigma.crack(expected[:encryption], expected[:date])
+  end
+
+  def test_it_can_crack_without_date
+    skip
+    cracked = {
+      encryption: 'hello world end',
+      date: '092020',
+      key: 'unknown'
+    }
+    assert_equal cracked, @enigma.crack('vjqtbeaweqihssi')
+  end
 end
