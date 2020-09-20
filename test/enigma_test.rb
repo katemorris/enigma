@@ -54,7 +54,7 @@ class EnigmaTest < Minitest::Test
 
   def test_it_can_decrypt
     expected = {
-      ecryption: 'hello world',
+      decryption: 'hello world',
       key: '02715',
       date: '040895'
     }
