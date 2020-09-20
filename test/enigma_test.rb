@@ -43,9 +43,9 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_can_encrypt_using_today_date
-    @enigma.stubs(:date).returns('091820')
+    @enigma.stubs(:make_date).returns('091820')
     expected = {
-                  encryption: 'keder ohulw',
+                  encryption: 'lib sdmcvpu',
                   key: '02715',
                   date: '091820'
                 }
