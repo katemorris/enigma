@@ -1,18 +1,13 @@
 require './lib/key'
 require './lib/offset'
+require './lib/variable'
+
 class Shift
   attr_reader :key, :offset
+  include Variable
   def initialize(key = make_key, date = make_date)
     @key = Key.new(key)
     @offset = Offset.new(date)
-  end
-
-  def make_key
-    5.times.map { rand(10) }.join.to_s
-  end
-
-  def make_date
-    Date.today.strftime('%m%d%y')
   end
 
   def breakdown
