@@ -3,7 +3,6 @@ require 'date'
 require './lib/enigma'
 
 class EnigmaTest < Minitest::Test
-  @@chars = ("a".."z").to_a << " "
   def setup
     @enigma = Enigma.new
   end
@@ -13,13 +12,18 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, @enigma.get_shift('02715', '040895')
   end
 
-  # def test_it_can_rotate_characters
-  #   move = 4
-  #   char = 't'
-  #   location = 20
-  #   @@chars.stubs(:rotate).returns('x')
-  #   assert_equal 'x', @enigma.rotate_letter(move, char)
-  # end
+  def test_it_can_rotate_characters_on_encrypt
+    move = 4
+    char = 't'
+    String.any_instance.stubs(:include?).with('encrypt').returns(true)
+    assert_equal 'x', @enigma.rotate_letter(move, char)
+  end
+
+  def test_it_can_rotate_characters_on_decrypt
+    move = 4
+    char = 't'
+    assert_equal 'p', @enigma.rotate_letter(move, char)
+  end
 
   def test_it_can_shift_letters
     char = 'r'
