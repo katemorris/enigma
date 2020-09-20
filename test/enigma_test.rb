@@ -31,7 +31,12 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_can_encrypt_a_string
-    assert_equal 'keder ohulw', @enigma.change_characters('hello world', '02715', '040895')
+    string = 'hello world'
+    string2 = 'hello world!'
+    key = '02715'
+    date = '040895'
+    assert_equal 'keder ohulw', @enigma.change_characters(string, key, date)
+    assert_equal 'keder ohulw!', @enigma.change_characters(string2, key, date)
   end
 
   def test_it_can_encrypt
