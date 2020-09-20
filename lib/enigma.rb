@@ -1,6 +1,7 @@
 require './lib/shift'
 require 'date'
 require './lib/variable'
+require './lib/offset'
 
 class Enigma
   include Variable
@@ -63,25 +64,29 @@ class Enigma
     }
   end
 
-  def comparison_hash(string)
+  def comparison_values(string)
     end_encoded = string.split('').pop(4) #hssi
     end_index = [' ', 'e', 'n', 'd']
-    end_encoded.each_with_object({}) do |character, hash|
-      end_index.each do |char_unencoded|
-        hash[character] = char_unencoded
+    end_index.zip(end_encoded).map do |pair|
+      @chars.index(pair.last) - @chars.index(pair.first)
+    end
+  end
+
+  def find_offset_hash(date)
+    Offset.new(date).breakdown
+  end
+
+  def key_hash(string, date)
+    find_offset_hash(date).map do |letter, value|
+      comparison_values(string).map do |diff_index|
+        value = diff_index - value
       end
     end
   end
 
   def find_key(string, date)
-    round = 0
-    comparison_hash(string).each_with_object({}) do |(encoded, decoded), hash|
-      if encoded == decoded
-        hash[:A] = 0
-      else
-        hash[:A] = @chars.index(encoded) - @chars.index(decoded)
-      end
-    end
+    require "pry"; binding.pry
+    key_hash(string, date)
   end
 
   def crack(string, date = make_date)
