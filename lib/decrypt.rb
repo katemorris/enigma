@@ -5,7 +5,6 @@ contents = open(ARGV.first).readlines
 key = ARGV[2]
 date = ARGV.last
 decrypted_message = contents.map do |line|
-  require "pry"; binding.pry
   enigma.decrypt(line, key, date)[:decryption]
 end
 open(ARGV[1], 'w').write(decrypted_message.join)
