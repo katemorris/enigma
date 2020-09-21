@@ -99,9 +99,9 @@ class Enigma
     end
   end
 
-  def potential_keys(key_shift_value)
+  def potential_keys(diff)
     [1, 2, 3, 4].map do |value|
-      potential = ((27 * value) + key_shift_value.to_i).to_s
+      potential = ((27 * value) + diff.to_i).to_s
       if potential.length == 1
         '0'.concat(potential)
       else
@@ -110,26 +110,25 @@ class Enigma
     end
   end
 
-  def find_sequential_key(previous_value, key_shift_value)
-    potential_keys(key_shift_value).select do |key|
+  def find_sequential_key(previous_value, diff)
+    potential_keys(diff).select do |key|
       line_breakdown(key).first == line_breakdown(previous_value).last
     end.first
   end
 
-  def find_new_key_value(previous_value, key_shift_value)
-    if previous_value == '0' && key_shift_value.to_s.length == 1
-      previous_value = '0'.concat(key_shift_value.to_s)
-    elsif previous_value == '0' && key_shift_value.to_s.length == 2
-      previous_value = key_shift_value.to_s
+  def find_new_key_value(previous_value, diff)
+    if previous_value == '0'
+      previous_value = potential_keys(diff).first
     else
-      previous_value = find_sequential_key(previous_value, key_shift_value)
+      previous_value = find_sequential_key(previous_value, diff)
     end
   end
 
   def decode_key(string, date)
     previous_value = '0'
-    key_hash(string, date).map do |letter, key_shift_value|
-      previous_value = find_new_key_value(previous_value, key_shift_value)
+    diff_hash(string, date).map do |letter, diff|
+      require "pry"; binding.pry
+      previous_value = find_new_key_value(previous_value, diff)
       [letter, previous_value]
     end.to_h
   end
