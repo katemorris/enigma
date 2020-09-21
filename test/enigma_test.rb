@@ -45,11 +45,11 @@ class EnigmaTest < Minitest::Test
 
   def test_it_can_find_the_rotation_value_of_uncracked_code
     string = 'vjqtbeaweqihssi'
-    assert_equal -3, @enigma.find_rotation(string)
+    assert_equal (-3), @enigma.find_rotation(string)
     string2 = 'ksieufnjs huyeelskof'
     assert_equal 0, @enigma.find_rotation(string2)
     string3 = 'vjqtbeaweqi!hssi'
-    assert_equal -3, @enigma.find_rotation(string3)
+    assert_equal (-3), @enigma.find_rotation(string3)
   end
 
   def test_it_can_rotate_the_encoded_end_to_align_with_message_length
