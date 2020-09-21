@@ -24,7 +24,7 @@ class CrackedKey
   def build_key(string, date)
     key = []
     check_key_hash(string, date).values.each_with_index do |value, index|
-      if index == 0
+      if index.zero?
         key << line_breakdown(value)
       else
         key << line_breakdown(value).last
@@ -35,7 +35,7 @@ class CrackedKey
 
   def check_key_hash(string, date)
     rnd = 0
-    while test_key_hash(string, date, rnd).values.any? {|value| value.nil? }
+    while test_key_hash(string, date, rnd).values.any? { |value| value.nil? }
       rnd += 1
       test_key_hash(string, date, rnd)
     end
@@ -52,18 +52,18 @@ class CrackedKey
 
   def key_hash(string, date)
     offset_hash = Offset.new(date).breakdown
-    offset_hash.merge(diff_values_hash(string)) do |letter, offset, diff|
+    offset_hash.merge(diff_values_hash(string)) do |_letter, offset, diff|
       ((-1 * diff) - offset)
     end
   end
 
   def find_new_key_value(previous_value, diff)
     if previous_value.nil?
-      previous_value = nil
+      nil
     elsif previous_value.split('').include?('n')
-      previous_value = potential_keys(diff)[previous_value.split('').last.to_i]
+      potential_keys(diff)[previous_value.split('').last.to_i]
     else
-      previous_value = find_sequential_key(previous_value, diff)
+      find_sequential_key(previous_value, diff)
     end
   end
 
