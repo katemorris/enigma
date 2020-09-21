@@ -89,7 +89,19 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_can_select_next_key_from_potentials_matching_previous_key_char
+    values = ['02', '29', '56', '83', '110']
+    @enigma.stubs(:potential_keys).returns(values)
     assert_equal '56', @enigma.find_sequential_key('35', 2)
+  end
+
+  def test_it_can_return_next_value_if_first_nil_or_next_based_ob_prev_value
+    values = ['08', '35', '62', '89', '116']
+    @enigma.stubs(:potential_keys).returns(values)
+    @enigma.stubs(:find_sequential_key).returns('56')
+
+    assert_equal '56', @enigma.find_new_key_value('35', 2)
+    assert_nil @enigma.find_new_key_value(nil, 2)
+    assert_equal '62', @enigma.find_new_key_value('n2', 2)
   end
 
   def test_it_can_encrypt
