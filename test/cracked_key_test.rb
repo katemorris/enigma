@@ -25,7 +25,7 @@ class CrackedKeyTest < Minitest::Test
   end
 
   def test_it_can_create_matched_pairs_of_encoded_decoded_end
-    expected = [['e','s'], ['n', 's'], ['d', 'i'], [' ', 'h']]
+    expected = [['e', 's'], ['n', 's'], ['d', 'i'], [' ', 'h']]
     assert_equal expected, @cracked.comparison_rotated_values('vjqtbeaweqihssi')
   end
 
