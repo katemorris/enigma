@@ -56,7 +56,8 @@ class EnigmaTest < Minitest::Test
       key: '08634',
       date: '291018'
     }
-    assert_equal expected2, @enigma.encrypt('you got this end', '08634', '291018')
+    string = 'you got this end'
+    assert_equal expected2, @enigma.encrypt(string, '08634', '291018')
   end
 
   def test_it_can_decrypt
@@ -102,7 +103,7 @@ class EnigmaTest < Minitest::Test
       key: '08304',
       date: '291018'
     }
-    assert_equal expected, @enigma.encrypt("hello world end", "08304", "291018")
+    assert_equal expected, @enigma.encrypt('hello world end', '08304', '291018')
 
     cracked = {
       decryption: 'hello world end',
@@ -128,7 +129,8 @@ class EnigmaTest < Minitest::Test
       key: '08304',
       date: '291018'
     }
-    assert_equal expected, @enigma.encrypt("hello world! end.", "08304", "291018")
+    string = 'hello world! end.'
+    assert_equal expected, @enigma.encrypt(string, '08304', '291018')
 
     cracked = {
       decryption: 'hello world! end.',
