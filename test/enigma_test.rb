@@ -43,6 +43,51 @@ class EnigmaTest < Minitest::Test
     assert_equal 'keder ohulw!', @enigma.change_characters(string2, key, date)
   end
 
+  def test_it_can_find_the_rotation_value_of_uncracked_code
+    string = 'vjqtbeaweqihssi'
+    assert_equal -3, @enigma.find_rotation(string)
+    string2 = 'ksieufnjs huyeelskof'
+    assert_equal 0, @enigma.find_rotation(string2)
+    string3 = 'vjqtbeaweqi!hssi'
+    assert_equal -3, @enigma.find_rotation(string3)
+  end
+
+  def test_it_can_rotate_the_encoded_end_to_align_with_message_length
+    expected = ['s', 's', 'i', 'h']
+    assert_equal expected, @enigma.rotate_encoded_end('vjqtbeaweqihssi')
+  end
+
+  def test_it_can_create_matched_pairs_of_encoded_decoded_end
+    expected = [['e','s'], ['n', 's'], ['d', 'i'], [' ', 'h']]
+    assert_equal expected, @enigma.comparison_rotated_values('vjqtbeaweqihssi')
+  end
+
+  def test_it_can_create_hash_using_difference_encoded_decoded_end
+    expected = {
+      A: -14,
+      B: -5,
+      C: -5,
+      D: 19
+    }
+    assert_equal expected, @enigma.diff_values_hash('vjqtbeaweqihssi')
+  end
+
+  def test_it_can_create_key_hash
+    values = { A: -14, B: -5, C: -5, D: 19 }
+    @enigma.stubs(:diff_values_hash).returns(values)
+    expected = {
+      A: 8,
+      B: 2,
+      C: 3,
+      D: -23
+    }
+    assert_equal expected, @enigma.key_hash('vjqtbeaweqihssi', '291018')
+  end
+
+  def test_it_can_generate_potential_keys_from_factors_of_27
+    assert_equal ['08', '35', '62', '89', '116'], @enigma.potential_keys(8)
+  end
+
   def test_it_can_encrypt
     expected = {
       encryption: 'keder ohulw',
@@ -79,12 +124,12 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_can_encrypt_using_generated_variables
-    @enigma.stubs(:make_date).returns('091820')
+    @enigma.stubs(:make_date).returns('180920')
     @enigma.stubs(:make_key).returns('05732')
     expected = {
-      encryption: 'oldqvgotysw',
+      encryption: 'sldqzgotbsw',
       key: '05732',
-      date: '091820'
+      date: '180920'
     }
     assert_equal expected, @enigma.encrypt('hello world')
   end
@@ -106,13 +151,29 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_can_crack_without_date
-    skip
-    @enigma.stubs(:make_date).returns('091820')
+    @enigma.stubs(:make_date).returns('180920')
     cracked = {
-      encryption: 'hello world end',
-      date: '092020',
-      key: 'unknown'
+      decryption: 'hello world end',
+      date: '180920',
+      key: '62862'
     }
     assert_equal cracked, @enigma.crack('vjqtbeaweqihssi')
+  end
+
+  def test_it_can_crack_a_code_with_punctuation
+    skip
+    expected = {
+      encryption: 'vjqtbeaweqi!hssi',
+      key: '08304',
+      date: '291018'
+    }
+    assert_equal expected, @enigma.encrypt("hello world! end", "08304", "291018")
+
+    cracked = {
+      decryption: 'hello world! end',
+      date: '291018',
+      key: '08304'
+    }
+    assert_equal cracked, @enigma.crack(expected[:encryption], expected[:date])
   end
 end
