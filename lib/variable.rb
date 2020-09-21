@@ -12,5 +12,6 @@ module Variable
       string.downcase
     else
       string.downcase.delete(string.split('').last)
+    end
   end
 end
