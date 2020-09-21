@@ -5,7 +5,7 @@ class ShiftTest < Minitest::Test
   def setup
     @shift = Shift.new
   end
-  
+
   def test_it_exists
     assert_equal 5, @shift.key.value.length
     assert_equal 4, @shift.offset.value.length
@@ -23,7 +23,7 @@ class ShiftTest < Minitest::Test
 
   def test_it_can_make_a_date_value
     Date.stubs(:today).returns(Date.new(2020,9,18))
-    assert_equal '091820', @shift.make_date
+    assert_equal '180920', @shift.make_date
   end
 
   def test_it_returns_shift_values

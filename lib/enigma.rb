@@ -1,15 +1,12 @@
 require './lib/shift'
 require 'date'
 require './lib/variable'
+require './lib/offset'
 
 class Enigma
   include Variable
   def initialize
     @chars = ('a'..'z').to_a << ' '
-  end
-
-  def line_breakdown(string)
-    string.split('')
   end
 
   def get_shift(key, date)
@@ -60,6 +57,15 @@ class Enigma
       decryption: change_characters(string.downcase, key, date),
       key: key,
       date: date
+    }
+  end
+
+  def crack(string, date = make_date)
+    key = CrackedKey.new(string, date).value
+    {
+      decryption: change_characters(string.downcase, key, date),
+      date: date,
+      key: key
     }
   end
 end

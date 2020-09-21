@@ -50,6 +50,14 @@ class EnigmaTest < Minitest::Test
       date: '040895'
     }
     assert_equal expected, @enigma.encrypt('hello world', '02715', '040895')
+
+    expected2 = {
+      encryption: 'lwekuwdkgptcnmyo',
+      key: '08634',
+      date: '291018'
+    }
+    string = 'you got this end'
+    assert_equal expected2, @enigma.encrypt(string, '08634', '291018')
   end
 
   def test_it_can_decrypt
@@ -62,30 +70,73 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_can_encrypt_and_decrypt_using_today_date
-    @enigma.stubs(:make_date).returns('091820')
+    @enigma.stubs(:make_date).returns('180920')
     encrypted = {
-      encryption: 'lib sdmcvpu',
+      encryption: 'pib wdmczpu',
       key: '02715',
-      date: '091820'
+      date: '180920'
     }
     assert_equal encrypted, @enigma.encrypt('hello world', '02715')
 
     expected = {
       decryption: 'hello world',
       key: '02715',
-      date: '091820'
+      date: '180920'
     }
     assert_equal expected, @enigma.decrypt(encrypted[:encryption], '02715')
   end
 
   def test_it_can_encrypt_using_generated_variables
-    @enigma.stubs(:make_date).returns('091820')
+    @enigma.stubs(:make_date).returns('180920')
     @enigma.stubs(:make_key).returns('05732')
     expected = {
-      encryption: 'oldqvgotysw',
+      encryption: 'sldqzgotbsw',
       key: '05732',
-      date: '091820'
+      date: '180920'
     }
     assert_equal expected, @enigma.encrypt('hello world')
+  end
+
+  def test_it_can_crack_a_code
+    expected = {
+      encryption: 'vjqtbeaweqihssi',
+      key: '08304',
+      date: '291018'
+    }
+    assert_equal expected, @enigma.encrypt('hello world end', '08304', '291018')
+
+    cracked = {
+      decryption: 'hello world end',
+      date: '291018',
+      key: '08304'
+    }
+    assert_equal cracked, @enigma.crack(expected[:encryption], expected[:date])
+  end
+
+  def test_it_can_crack_without_date
+    @enigma.stubs(:make_date).returns('180920')
+    cracked = {
+      decryption: 'hello world end',
+      date: '180920',
+      key: '62862'
+    }
+    assert_equal cracked, @enigma.crack('vjqtbeaweqihssi')
+  end
+
+  def test_it_can_crack_a_code_with_punctuation
+    expected = {
+      encryption: 'vjqtbeaweqi!hssi.',
+      key: '08304',
+      date: '291018'
+    }
+    string = 'hello world! end.'
+    assert_equal expected, @enigma.encrypt(string, '08304', '291018')
+
+    cracked = {
+      decryption: 'hello world! end.',
+      date: '291018',
+      key: '08304'
+    }
+    assert_equal cracked, @enigma.crack(expected[:encryption], expected[:date])
   end
 end
