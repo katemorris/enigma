@@ -15,11 +15,6 @@ class Offset
 
   def breakdown
     key_split = value.split("")
-    list = {}
-    list[:A] = key_split[0].to_i
-    list[:B] = key_split[1].to_i
-    list[:C] = key_split[2].to_i
-    list[:D] = key_split[3].to_i
-    list
+    make_hash(key_split)
   end
 end

@@ -88,12 +88,7 @@ class CrackedKey
     values = comparison_rotated_values(string).map do |pair|
       @chars.index(pair.first) - @chars.index(pair.last)
     end
-    {
-      A: values[0].to_i,
-      B: values[1].to_i,
-      C: values[2].to_i,
-      D: values[3].to_i
-    }
+    make_hash(values)
   end
 
   def comparison_rotated_values(string)
