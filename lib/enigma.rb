@@ -126,7 +126,7 @@ class Enigma
     end
   end
 
-  def build_key_hash(string, date, rnd)
+  def test_key_hash(string, date, rnd)
     previous_value = 'n'.concat(rnd.to_s)
     key_hash(string, date).map do |letter, diff|
       previous_value = find_new_key_value(previous_value, diff)
@@ -136,11 +136,11 @@ class Enigma
 
   def check_key_hash(string, date)
     rnd = 0
-    while build_key_hash(string, date, rnd).values.any? {|value| value.nil? }
+    while test_key_hash(string, date, rnd).values.any? {|value| value.nil? }
       rnd += 1
-      build_key_hash(string, date, rnd)
+      test_key_hash(string, date, rnd)
     end
-    build_key_hash(string, date, rnd)
+    test_key_hash(string, date, rnd)
   end
 
   def build_key(string, date)
@@ -156,7 +156,7 @@ class Enigma
   end
 
   def crack(string, date = make_date)
-    key = build_key(string.downcase, date)
+    key = build_key(punctuation_remove(string), date)
     {
       decryption: change_characters(string.downcase, key, date),
       date: date,
