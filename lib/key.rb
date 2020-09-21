@@ -1,7 +1,10 @@
+require './lib/variable'
+
 class Key
+  include Variable
   attr_reader :value
 
-  def initialize(key = 5.times.map { rand(10) }.join.to_s)
+  def initialize(key = make_key)
     @value = key
   end
 
