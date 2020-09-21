@@ -88,6 +88,10 @@ class EnigmaTest < Minitest::Test
     assert_equal ['08', '35', '62', '89', '116'], @enigma.potential_keys(8)
   end
 
+  def test_it_can_select_next_key_from_potentials_matching_previous_key_char
+    assert_equal '56', @enigma.find_sequential_key('35', 2)
+  end
+
   def test_it_can_encrypt
     expected = {
       encryption: 'keder ohulw',
@@ -163,14 +167,14 @@ class EnigmaTest < Minitest::Test
   def test_it_can_crack_a_code_with_punctuation
     skip
     expected = {
-      encryption: 'vjqtbeaweqi!hssi',
+      encryption: 'vjqtbeaweqi!hssi.',
       key: '08304',
       date: '291018'
     }
     assert_equal expected, @enigma.encrypt("hello world! end", "08304", "291018")
 
     cracked = {
-      decryption: 'hello world! end',
+      decryption: 'hello world! end.',
       date: '291018',
       key: '08304'
     }
