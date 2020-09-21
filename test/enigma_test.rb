@@ -104,6 +104,15 @@ class EnigmaTest < Minitest::Test
     assert_equal '62', @enigma.find_new_key_value('n2', 2)
   end
 
+  def test_it_can_build_testable_key_hash
+    values = { A: 8, B: 2, C: 3, D: -23 }
+    @enigma.stubs(:key_hash).returns(values)
+    @enigma.stubs(:find_new_key_value).returns('56')
+
+    expected = { A: '56', B: '56', C: '56', D: '56' }
+    assert_equal expected, @enigma.test_key_hash('mdksjiek', '080598', 2)
+  end
+
   def test_it_can_encrypt
     expected = {
       encryption: 'keder ohulw',
@@ -111,6 +120,13 @@ class EnigmaTest < Minitest::Test
       date: '040895'
     }
     assert_equal expected, @enigma.encrypt('hello world', '02715', '040895')
+
+    expected2 = {
+      encryption: 'lwekuwdkgptcnmyo',
+      key: '08634',
+      date: '291018'
+    }
+    assert_equal expected2, @enigma.encrypt('you got this end', '08634', '291018')
   end
 
   def test_it_can_decrypt
