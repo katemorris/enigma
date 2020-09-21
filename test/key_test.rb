@@ -8,12 +8,6 @@ class KeyTest < Minitest::Test
     assert_equal 5, key.value.length
   end
 
-  def test_it_can_crack_a_key
-    cracked = Key.crack('lwekuwdkgptcnmyo', '291018')
-
-    assert_equal '08634', cracked.value
-  end
-
   def test_it_can_break_up_key_value
     key = Key.new('09907')
 
