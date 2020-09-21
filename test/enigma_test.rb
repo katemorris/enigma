@@ -98,7 +98,7 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, @enigma.encrypt("hello world end", "08304", "291018")
 
     cracked = {
-      encryption: 'hello world end',
+      decryption: 'hello world end',
       date: '291018',
       key: '08304'
     }
