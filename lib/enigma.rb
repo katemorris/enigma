@@ -99,30 +99,57 @@ class Enigma
     end
   end
 
-  def decode_key(string, date)
-    previous_value = '0'
-    key_hash(string, date).map do |letter, key_shift_value|
-      if previous_value == '0' && key_shift_value.to_s.length == 1
-        previous_value = '0'.concat(key_shift_value.to_s)
-      elsif previous_value == '0' && key_shift_value.to_s.length == 2
-        previous_value = key_shift_value.to_s
-      elsif key_shift_value.to_s.length == 1
-        
+  def potential_keys(key_shift_value)
+    [1, 2, 3, 4].map do |value|
+      potential = ((27 * value) + key_shift_value.to_i).to_s
+      if potential.length == 1
+        '0'.concat(potential)
       else
-
+        potential
       end
     end
   end
 
-  def find_key(string, date)
-    require "pry"; binding.pry
+  def find_sequential_key(previous_value, key_shift_value)
+    potential_keys(key_shift_value).select do |key|
+      line_breakdown(key).first == line_breakdown(previous_value).last
+    end.first
+  end
 
+  def find_new_key_value(previous_value, key_shift_value)
+    if previous_value == '0' && key_shift_value.to_s.length == 1
+      previous_value = '0'.concat(key_shift_value.to_s)
+    elsif previous_value == '0' && key_shift_value.to_s.length == 2
+      previous_value = key_shift_value.to_s
+    else
+      previous_value = find_sequential_key(previous_value, key_shift_value)
+    end
+  end
+
+  def decode_key(string, date)
+    previous_value = '0'
+    key_hash(string, date).map do |letter, key_shift_value|
+      previous_value = find_new_key_value(previous_value, key_shift_value)
+      [letter, previous_value]
+    end.to_h
+  end
+
+  def find_key(string, date)
+    key = []
+    decode_key(string, date).values.each_with_index do |value, index|
+      if index == 0
+        key << line_breakdown(value)
+      else
+        key << line_breakdown(value).last
+      end
+    end
+    key.flatten.join
   end
 
   def crack(string, date = make_date)
     key = find_key(string.downcase, date)
     {
-      decryption: change_characters(string.downcase, date, key),
+      decryption: change_characters(string.downcase, key, date),
       date: date,
       key: key
     }
