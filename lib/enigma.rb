@@ -100,7 +100,7 @@ class Enigma
   end
 
   def potential_keys(diff)
-    [1, 2, 3, 4].map do |value|
+    [0, 1, 2, 3, 4].map do |value|
       potential = ((27 * value) + diff.to_i).to_s
       if potential.length == 1
         '0'.concat(potential)
@@ -117,25 +117,35 @@ class Enigma
   end
 
   def find_new_key_value(previous_value, diff)
-    if previous_value == '0'
-      previous_value = potential_keys(diff).first
+    if previous_value.nil?
+      previous_value = nil
+    elsif previous_value.split('').include?('n')
+      previous_value = potential_keys(diff)[previous_value.split('').last.to_i]
     else
       previous_value = find_sequential_key(previous_value, diff)
     end
   end
 
-  def decode_key(string, date)
-    previous_value = '0'
-    diff_hash(string, date).map do |letter, diff|
-      require "pry"; binding.pry
+  def build_key_hash(string, date, rnd)
+    previous_value = 'n'.concat(rnd.to_s)
+    key_hash(string, date).map do |letter, diff|
       previous_value = find_new_key_value(previous_value, diff)
       [letter, previous_value]
     end.to_h
   end
 
-  def find_key(string, date)
+  def check_key_hash(string, date)
+    rnd = 0
+    while build_key_hash(string, date, rnd).values.any? {|value| value.nil? }
+      rnd += 1
+      build_key_hash(string, date, rnd)
+    end
+    build_key_hash(string, date, rnd)
+  end
+
+  def build_key(string, date)
     key = []
-    decode_key(string, date).values.each_with_index do |value, index|
+    check_key_hash(string, date).values.each_with_index do |value, index|
       if index == 0
         key << line_breakdown(value)
       else
@@ -146,7 +156,7 @@ class Enigma
   end
 
   def crack(string, date = make_date)
-    key = find_key(string.downcase, date)
+    key = build_key(string.downcase, date)
     {
       decryption: change_characters(string.downcase, key, date),
       date: date,
