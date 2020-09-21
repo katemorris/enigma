@@ -64,29 +64,59 @@ class Enigma
     }
   end
 
-  def comparison_values(string)
-    end_encoded = string.split('').pop(4) #hssi
-    end_index = [' ', 'e', 'n', 'd']
-    end_index.zip(end_encoded).map do |pair|
-      @chars.index(pair.last) - @chars.index(pair.first)
-    end
+  def find_rotation(string)
+    -1 * (string.split('').length % 4)
   end
 
-  def find_offset_hash(date)
+  def rotate_encoded_end(string)
+    string.split('').pop(4).rotate(find_rotation(string))
+  end
+
+  def comparison_rotated_values(string)
+    known_chars = [' ', 'e', 'n', 'd']
+    known_chars.rotate(find_rotation(string)).zip(rotate_encoded_end(string))
+  end
+
+  def comparison_values(string)
+    values = comparison_rotated_values(string).map do |pair|
+      @chars.index(pair.first) - @chars.index(pair.last)
+    end
+    {
+      A: values[0].to_i,
+      B: values[1].to_i,
+      C: values[2].to_i,
+      D: values[3].to_i
+    }
+  end
+
+  def offset_hash(date)
     Offset.new(date).breakdown
   end
 
   def key_hash(string, date)
-    find_offset_hash(date).map do |letter, value|
-      comparison_values(string).map do |diff_index|
-        value = diff_index - value
+    offset_hash(date).merge(comparison_values(string)) do |letter, offset, diff|
+      ((-1 * diff) - offset)
+    end
+  end
+
+  def decode_key(string, date)
+    previous_value = '0'
+    key_hash(string, date).map do |letter, key_shift_value|
+      if previous_value == '0' && key_shift_value.to_s.length == 1
+        previous_value = '0'.concat(key_shift_value.to_s)
+      elsif previous_value == '0' && key_shift_value.to_s.length == 2
+        previous_value = key_shift_value.to_s
+      elsif key_shift_value.to_s.length == 1
+        
+      else
+
       end
     end
   end
 
   def find_key(string, date)
     require "pry"; binding.pry
-    key_hash(string, date)
+
   end
 
   def crack(string, date = make_date)
