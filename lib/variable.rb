@@ -7,11 +7,7 @@ module Variable
     Date.today.strftime('%d%m%y')
   end
 
-  def punctuation_remove(string)
-    if @chars.include?(string.split('').last)
-      string.downcase
-    else
-      string.downcase.delete(string.split('').last)
-    end
+  def line_breakdown(string)
+    string.split('')
   end
 end
