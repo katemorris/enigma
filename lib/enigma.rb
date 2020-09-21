@@ -65,7 +65,10 @@ class Enigma
   end
 
   def find_rotation(string)
-    -1 * (string.split('').length % 4)
+    included_set = string.split('').select do |char|
+      @chars.include?(char)
+    end
+    -1 * (included_set.length % 4)
   end
 
   def rotate_encoded_end(string)
@@ -77,7 +80,7 @@ class Enigma
     known_chars.rotate(find_rotation(string)).zip(rotate_encoded_end(string))
   end
 
-  def comparison_values(string)
+  def diff_values_hash(string)
     values = comparison_rotated_values(string).map do |pair|
       @chars.index(pair.first) - @chars.index(pair.last)
     end
@@ -89,12 +92,9 @@ class Enigma
     }
   end
 
-  def offset_hash(date)
-    Offset.new(date).breakdown
-  end
-
   def key_hash(string, date)
-    offset_hash(date).merge(comparison_values(string)) do |letter, offset, diff|
+    offset_hash = Offset.new(date).breakdown
+    offset_hash.merge(diff_values_hash(string)) do |letter, offset, diff|
       ((-1 * diff) - offset)
     end
   end
