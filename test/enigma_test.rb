@@ -113,6 +113,19 @@ class EnigmaTest < Minitest::Test
     assert_equal expected, @enigma.test_key_hash('mdksjiek', '080598', 2)
   end
 
+  def test_it_can_check_for_valid_key_hash_or_redo
+    @enigma.stubs(:any?).returns(false)
+    values = { A: 35, B: 55, C: 59, D: 92 }
+    @enigma.stubs(:test_key_hash).returns(values)
+    assert_equal values, @enigma.check_key_hash('mdksjiek', '080598')
+  end
+
+  def test_it_can_build_key_value_from_hash
+    values = { A: '62', B: '28', C: '86', D: '62' }
+    @enigma.stubs(:check_key_hash).returns(values)
+    assert_equal '62862', @enigma.build_key('mdksjiek', '080598')
+  end
+
   def test_it_can_encrypt
     expected = {
       encryption: 'keder ohulw',
@@ -193,13 +206,12 @@ class EnigmaTest < Minitest::Test
   end
 
   def test_it_can_crack_a_code_with_punctuation
-    skip
     expected = {
       encryption: 'vjqtbeaweqi!hssi.',
       key: '08304',
       date: '291018'
     }
-    assert_equal expected, @enigma.encrypt("hello world! end", "08304", "291018")
+    assert_equal expected, @enigma.encrypt("hello world! end.", "08304", "291018")
 
     cracked = {
       decryption: 'hello world! end.',
