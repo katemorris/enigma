@@ -1,7 +1,8 @@
 require './lib/shift'
 require 'date'
 require './lib/variable'
-require './lib/offset'
+require './lib/cracked_key'
+
 
 class Enigma
   include Variable
