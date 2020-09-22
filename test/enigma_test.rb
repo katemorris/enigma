@@ -111,6 +111,13 @@ class EnigmaTest < Minitest::Test
       key: '08304'
     }
     assert_equal cracked, @enigma.crack(expected[:encryption], expected[:date])
+
+    cracked2 = {
+      decryption: "let's see. end",
+      date: '210920',
+      key: '87415'
+    }
+    assert_equal cracked2, @enigma.crack("xbg'glpst.lbas", '210920')
   end
 
   def test_it_can_crack_without_date
