@@ -79,13 +79,19 @@ class CrackedKey
     end
   end
 
-  def sort_out_potential_odd_keys(diff)
+  def check_potential_for_negatives(diff)
     potential_keys(diff).map do |potential|
-      if potential.to_i < 0 && (potential.to_i + 27).to_s.length == 1
-        '0'.concat((potential.to_i + 27).to_s)
-      elsif potential.to_i < 0
+      if potential.to_i.negative?
         (potential.to_i + 27).to_s
-      elsif potential.length == 1
+      else
+        potential
+      end
+    end
+  end
+
+  def sort_out_potential_odd_keys(diff)
+    check_potential_for_negatives(diff).map do |potential|
+      if potential.length == 1
         '0'.concat(potential)
       else
         potential
