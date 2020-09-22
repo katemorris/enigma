@@ -52,7 +52,14 @@ class CrackedKeyTest < Minitest::Test
   end
 
   def test_it_can_generate_potential_keys_from_factors_of_27
-    assert_equal ['08', '35', '62', '89', '116'], @cracked.potential_keys(8)
+    assert_equal ['8', '35', '62', '89', '116'], @cracked.potential_keys(8)
+  end
+
+  def test_it_can_sort_out_bad_potential_keys
+    values = ['8', '35', '62', '89', '116']
+    @cracked.stubs(:potential_keys).returns(values)
+    expected = ['08', '35', '62', '89', '116']
+    assert_equal expected, @cracked.sort_out_potential_odd_keys(8)
   end
 
   def test_it_can_select_next_key_from_potentials_matching_previous_key_char
