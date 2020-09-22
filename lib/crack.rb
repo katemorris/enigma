@@ -1,7 +1,8 @@
 require './lib/enigma.rb'
 enigma = Enigma.new
 
-contents = open(ARGV.first).readlines
+encrypted = open(ARGV.first)
+contents = encrypted.readlines
 key = ''
 date = ARGV.last
 if contents.count > 1
@@ -14,5 +15,8 @@ else
   key = crack[:key]
   decrypted_message = crack[:decryption]
 end
-open(ARGV[1], 'w').write(decrypted_message)
+output = open(ARGV[1], 'w')
+output.write(decrypted_message)
 puts "Created #{ARGV[1]} with the cracked key #{key} and date #{date}"
+encrypted.close
+output.close

@@ -1,7 +1,8 @@
 require './lib/enigma.rb'
 enigma = Enigma.new
 
-contents = open(ARGV.first).readlines
+message = open(ARGV.first)
+contents = message.readlines
 key = ''
 date = ''
 encrypted_message = contents.map do |line|
@@ -14,5 +15,8 @@ encrypted_message = contents.map do |line|
     enigma.encrypt(line, key, date)[:encryption]
   end
 end
-open(ARGV.last, 'w').write(encrypted_message.join)
+encrypted = open(ARGV.last, 'w')
+encrypted.write(encrypted_message.join)
 puts "Created #{ARGV.last} with the key #{key} and date #{date}"
+message.close
+encrypted.close
