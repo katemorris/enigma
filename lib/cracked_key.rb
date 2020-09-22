@@ -61,25 +61,32 @@ class CrackedKey
     if previous_value.nil?
       nil
     elsif previous_value.split('').include?('n')
-      potential_keys(diff)[previous_value.split('').last.to_i]
+      sort_out_potential_odd_keys(diff)[previous_value.split('').last.to_i]
     else
       find_sequential_key(previous_value, diff)
     end
   end
 
   def find_sequential_key(previous_value, diff)
-    potential_keys(diff).select do |key|
+    sort_out_potential_odd_keys(diff).select do |key|
       line_breakdown(key).first == line_breakdown(previous_value).last
     end.first
   end
 
   def potential_keys(diff)
     [0, 1, 2, 3, 4].map do |value|
-      potential = ((27 * value) + diff.to_i).to_s
-      if potential.length == 1
-        '0'.concat(potential)
+      ((27 * value) + diff.to_i).to_s
+    end
+  end
+
+  def sort_out_potential_odd_keys(diff)
+    potential_keys(diff).map do |potential|
+      if potential.to_i < 0 && (potential.to_i + 27).to_s.length == 1
+        '0'.concat((potential.to_i + 27).to_s)
       elsif potential.to_i < 0
         (potential.to_i + 27).to_s
+      elsif potential.length == 1
+        '0'.concat(potential)
       else
         potential
       end
