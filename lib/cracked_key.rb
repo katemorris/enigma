@@ -78,6 +78,8 @@ class CrackedKey
       potential = ((27 * value) + diff.to_i).to_s
       if potential.length == 1
         '0'.concat(potential)
+      elsif potential.to_i < 0
+        (potential.to_i + 27).to_s
       else
         potential
       end
